@@ -41,13 +41,17 @@ const cardContents = [
 class Content extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {list: cardContents};
+    this.state = {list: cardContents, tab: props.tab};
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   // Firestoreからデータ一覧を取得する
   async componentDidMount() {
-    const querySnapshot = await db.collection("articles").orderBy('createdAt', 'desc').get()
+    let articlesDb = db.collection("articles");
+    if(this.state.tab !== "home") {
+      articlesDb = articlesDb.where("category", "==", this.state.tab);
+    }
+    const querySnapshot = await articlesDb.orderBy('createdAt', 'desc').get()
     const items = [];
     querySnapshot.forEach(doc => {
       let data = doc.data();

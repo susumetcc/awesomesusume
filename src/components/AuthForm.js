@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 const AuthForm = props => {
   const classes = useStyles();
-  const { handleSubmit, onChangeMail, onChangePass } = props;
+  const { handleSubmit, onChangeMail, onChangePass, type } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -50,7 +50,7 @@ const AuthForm = props => {
         color="primary"
         className={classes.submit}
       >
-        Submit
+        {type}
       </Button>
     </form>
   );

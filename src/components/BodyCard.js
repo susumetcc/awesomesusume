@@ -43,7 +43,7 @@ export default function BodyCard(props) {
   console.log(list)
   return (
     <div className={classes.root}>
-      <GridList cellHeight={200} spacing={2} cols={column} className={classes.gridList}>
+      <GridList cellHeight={200} spacing={2} cols={column} className={classes.gridList} style={{width: "100vw"}}>
         {list.map((item) => (
           <GridListTile key={item.docId}>
             <img src={item.imageUrl[0]} alt={"Contemplative Reptile"} title="Contemplative Reptile" />
