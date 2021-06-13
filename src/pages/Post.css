@@ -1,0 +1,5 @@
+.inputFileBtnHide {
+  opacity:0;
+  appearance: none;
+  position: absolute;
+}

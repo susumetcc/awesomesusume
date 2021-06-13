@@ -1,0 +1,11 @@
+.avater-area {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  background-color: #c79100;
+}
