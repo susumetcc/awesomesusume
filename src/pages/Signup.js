@@ -11,12 +11,11 @@ function openAccount(props) {
   const { email, password, name } = props;
   // Sign Up
   auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       // Signed in
       var user = userCredential.user;
-      // ...
-      db.collection("users").doc(user).set({
-        userid: user,
+      await db.collection("users").doc(user.uid).set({
+        pageUrl: "",
         name: name,
         avaterUrl: "",
         intro: "",

@@ -37,12 +37,11 @@ class ImgMediaCard extends React.Component {
     const docId = db.collection("articles").doc().id;
     console.log(docId);
     db.collection("articles").doc(docId).set({
-      docId: docId,
       title: this.state.title,
       text: this.state.text,
       detail: this.state.detail,
       category: this.state.category,
-      userid: this.state.uid,
+      user: db.collection("users").doc(this.state.uid),
       imageUrl: [],
       like: [],
       star: 0,

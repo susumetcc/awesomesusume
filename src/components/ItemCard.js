@@ -55,6 +55,7 @@ class Content extends React.Component {
     const items = [];
     querySnapshot.forEach(doc => {
       let data = doc.data();
+      data.docId = doc.id;
       if(data.imageUrl.length === 0) {
         data.imageUrl[0] = NoImg;
       }
