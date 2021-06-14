@@ -8,9 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <App />
   </MuiThemeProvider>,
   document.getElementById('root')
 );

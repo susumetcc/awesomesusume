@@ -5,6 +5,7 @@ import Signin from "./pages/Signin";
 import './App.css';
 import Auth from "./components/Auth"
 import Explore from "./pages/Explore";
+import Article from "./pages/Article";
 import Post from "./pages/Post";
 import Signout from "./components/Signout"
 
@@ -23,9 +24,10 @@ function App() {
         <Route exact path="/" component={Explore}></Route>
         <Route exact path="/signup" component={Signup}></Route>
         <Route exact path="/signin" component={Signin}></Route>
+        <Route exact path="/p/:docid" component={Article}></Route>
         {/* ここから下は認証が必要なページ */}
-        <Auth path="/post" component={Post}></Auth>
-        <Auth path="/signout" component={Signout}></Auth>  
+        <Route exact path="/post"><Auth path="/post" component={Post}></Auth></Route>
+        <Route exact path="/signout"><Auth path="/signout" component={Signout}></Auth></Route>
       </Router>
     </>
   );

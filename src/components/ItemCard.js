@@ -48,7 +48,7 @@ class Content extends React.Component {
   // Firestoreからデータ一覧を取得する
   async componentDidMount() {
     let articlesDb = db.collection("articles");
-    if(this.state.tab !== "home") {
+    if(this.state.tab && this.state.tab !== "home") {
       articlesDb = articlesDb.where("category", "==", this.state.tab);
     }
     const querySnapshot = await articlesDb.orderBy('createdAt', 'desc').get()
@@ -62,6 +62,9 @@ class Content extends React.Component {
     });
 
     this.setState({ list: items });
+  }
+
+  componentWillUnmount = () => {
   }
 
   render() {

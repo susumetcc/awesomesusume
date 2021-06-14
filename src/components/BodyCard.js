@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -38,14 +39,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function BodyCard(props) {
-  const { list, column } = props;
+  const { list, column, history } = props;
   const classes = useStyles();
-  console.log(list)
+
   return (
     <div className={classes.root}>
       <GridList cellHeight={200} spacing={2} cols={column} className={classes.gridList} style={{width: "100vw"}}>
         {list.map((item) => (
-          <GridListTile key={item.docId}>
+          <GridListTile key={item.docId} component={Link} to={`/p/${item.docId}`}>
             <img src={item.imageUrl[0]} alt={"Contemplative Reptile"} title="Contemplative Reptile" />
             <GridListTileBar
               title={item.title}

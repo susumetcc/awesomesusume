@@ -5,7 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import firebase, { db, storage } from '../firebase';
+import firebase, { db, storage, auth } from '../firebase';
 import './Post.css'
 import BottomNavBar from '../components/BottomNav';
 
@@ -20,12 +20,13 @@ const useStyles = makeStyles((theme) => ({
 
 // Firebase
 
-
 class ImgMediaCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {title: "", text: "", detail: "", category: ""};
+
+    this.state = {title: "", text: "", detail: "", category: "", uid: ""};
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.changeTitle = this.changeTitle.bind(this);
     this.changeText = this.changeText.bind(this);
     this.changeDetail = this.changeDetail.bind(this);
@@ -34,19 +35,43 @@ class ImgMediaCard extends React.Component {
 
   handleOnSubmit = () => {
     const docId = db.collection("articles").doc().id;
+    console.log(docId);
     db.collection("articles").doc(docId).set({
       docId: docId,
       title: this.state.title,
       text: this.state.text,
       detail: this.state.detail,
       category: this.state.category,
-      userid: 'test',
+      userid: this.state.uid,
       imageUrl: [],
+      like: [],
+      star: 0,
+      comments: [],
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+      alert("Error writing document: ", error);
     });
 
     //登録後、Topに移動
     this.props.history.push("/");
+  }
+
+  async componentDidMount() {
+    // ユーザ認証情報の取得
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        let u = {};
+        u['profile'] = user.providerData;
+        this.setState({uid: user.uid});
+        console.log(u)
+      }
+    });
+  }
+
+  componentWillUnmount = () => {
   }
 
   changeTitle(e) {
@@ -65,22 +90,23 @@ class ImgMediaCard extends React.Component {
 
   render() {
     return (
-      <>
+      <div className={"postDiv"}>
         <p>投稿</p>
-        <form className={useStyles.root} onSubmit={this.handleOnSubmit} noValidate autoComplete="off" style={{justifyContent: "center"}}>
-          <Button component="label">
+        <form className={useStyles.root + " postForm"} onSubmit={this.handleOnSubmit} noValidate autoComplete="off">
+          <Button className={"inputbox"} component="label">
             ファイル送信ボタンです
             <input
               type="file"
               className="inputFileBtnHide"
             />
           </Button>
-          <TextField id="input-title" label="タイトル" onChange={this.changeTitle} />
-          <TextField id="imput-text" label="リード文" onChange={this.changeText} variant="outlined" />
-          <InputLabel id="input-category">カテゴリ</InputLabel>
+          <TextField id="input-title" className={"inputbox"} label="タイトル" onChange={this.changeTitle} />
+          <TextField id="imput-text" className={"inputbox"} label="リード文" onChange={this.changeText} variant="outlined" />
+          <InputLabel id="input-category" className={"inputbox"} style={{textAlign: "left"}}>カテゴリ</InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
+            className={"inputbox"}
             value={this.state.category}
             onChange={this.changeCategory}
           >
@@ -93,11 +119,11 @@ class ImgMediaCard extends React.Component {
             <MenuItem value={"restaurant"}>飲食店</MenuItem>
             <MenuItem value={"lecture"}>講義</MenuItem>
           </Select>
-          <TextField id="input-detail" label="本文" onChange={this.changeDetail} variant="outlined" />
-          <Button type="submit">投稿</Button>
+          <TextField id="input-detail" className={"inputbox"} label="本文" onChange={this.changeDetail} variant="outlined" />
+          <Button type="button" onClick={this.handleOnSubmit} className={"inputbox"}>投稿</Button>
         </form>
         <BottomNavBar page="post" />
-      </>
+      </div>
     );
   }
 }
