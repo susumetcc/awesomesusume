@@ -17,8 +17,9 @@ function openAccount(props) {
       await db.collection("users").doc(user.uid).set({
         pageUrl: "",
         name: name,
-        avaterUrl: "",
+        avatarUrl: "",
         intro: "",
+        favorite: [],
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
       window.location.href = "/";
@@ -66,7 +67,7 @@ class Signup extends React.Component {
           <div>
             <React.Fragment>
               <span className={"center-item"}>
-                <span className={"avater-area"}>
+                <span className={"avatar-area"}>
                   <PersonAddIcon
                     style={{ height: "32px", width: "32px", color: "#ffffff" }}
                   />

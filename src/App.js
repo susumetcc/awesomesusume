@@ -19,16 +19,16 @@ function App() {
           <Button color="secondary" href="/signin">サインイン</Button>
           <Button color="secondary" href="/signout">サインアウト</Button>
         </header>
+        <Router>
+          <Route exact path="/" component={Explore}></Route>
+          <Route exact path="/signup" component={Signup}></Route>
+          <Route exact path="/signin" component={Signin}></Route>
+          <Route exact path="/p/:docid" component={Article}></Route>
+          <Route exact path="/signout" component={Signout}></Route>
+          {/* ここから下は認証が必要なページ */}
+          <Route exact path="/post"><Auth path="/post" component={Post}></Auth></Route>
+        </Router>
       </div>
-      <Router>
-        <Route exact path="/" component={Explore}></Route>
-        <Route exact path="/signup" component={Signup}></Route>
-        <Route exact path="/signin" component={Signin}></Route>
-        <Route exact path="/p/:docid" component={Article}></Route>
-        {/* ここから下は認証が必要なページ */}
-        <Route exact path="/post"><Auth path="/post" component={Post}></Auth></Route>
-        <Route exact path="/signout"><Auth path="/signout" component={Signout}></Auth></Route>
-      </Router>
     </>
   );
 }

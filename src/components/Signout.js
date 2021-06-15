@@ -1,16 +1,19 @@
 import React from 'react';
 import { auth } from '../firebase';
 
-function logout() {
+async function logout() {
     auth.signOut();
+    await new Promise(resolve => setTimeout(resolve, 3000));
     window.location.href = "/";
 }
 
-const Signout = () => (
-  <div>
-    サインアウトする場合は、「サインアウト」を押してください。
-    <button onClick={ logout() }>サインアウト</button>
-  </div>
-);
+function Signout() {
+  logout();
+  return (
+    <div>
+      サインアウトしました。<br/>まもなくメインページに移動します。
+    </div>
+  )
+};
 
 export default Signout;

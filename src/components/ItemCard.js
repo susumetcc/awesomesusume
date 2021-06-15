@@ -9,30 +9,86 @@ import BodyCard from './BodyCard'
 const cardContents = [
   {
     docId: "test0",
-    title: "タイトル1",
-    text: "サブヘッダー1",
-    name: "サブヘッダー1",
+    title: "",
+    text: "",
+    name: "",
     avatarUrl: NoImg,
     imageUrl: [NoImg]
   },
   {
     docId: "test1",
-    title: "タイトル2",
-    name: "サブヘッダー2",
+    title: "",
+    name: "",
     avatarUrl: NoImg,
     imageUrl: [NoImg]
   },
   {
     docId: "test2",
-    title: "タイトル3",
-    name: "サブヘッダー3",
+    title: "",
+    name: "",
     avatarUrl: NoImg,
     imageUrl: [NoImg]
   },
   {
     docId: "test3",
-    title: "タイトル4",
-    name: "サブヘッダー4",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test4",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test5",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test6",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test7",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test8",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test9",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test10",
+    title: "",
+    name: "",
+    avatarUrl: NoImg,
+    imageUrl: [NoImg]
+  },
+  {
+    docId: "test11",
+    title: "",
+    name: "",
     avatarUrl: NoImg,
     imageUrl: [NoImg]
   },
@@ -45,27 +101,41 @@ class Content extends React.Component {
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
+  _isMounted = false; //unmountを判断（ローディング判定用）
+
   // Firestoreからデータ一覧を取得する
   async componentDidMount() {
     let articlesDb = db.collection("articles");
     if(this.state.tab && this.state.tab !== "home") {
       articlesDb = articlesDb.where("category", "==", this.state.tab);
     }
-    const querySnapshot = await articlesDb.orderBy('createdAt', 'desc').get()
+    const articlesSnapshot = await articlesDb.orderBy('createdAt', 'desc').get()
+    let usershot = [];
+    await db.collection("users").get().then((snapshot) => {
+      usershot = snapshot;
+    })
     const items = [];
-    querySnapshot.forEach(doc => {
+    articlesSnapshot.forEach(doc => {
       let data = doc.data();
       data.docId = doc.id;
       if(data.imageUrl.length === 0) {
         data.imageUrl[0] = NoImg;
       }
+      usershot.forEach(userdoc => {
+        if(userdoc.id === data.userid) {
+          data.avatarUrl = userdoc.data().avatarUrl;
+          data.username = userdoc.data().name;
+        }
+      });
       items.push(data);
     });
 
+    this._isMounted = true;
     this.setState({ list: items });
   }
 
   componentWillUnmount = () => {
+    this._isMounted = false;
   }
 
   render() {

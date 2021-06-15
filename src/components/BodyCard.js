@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
-  avater: {
-    height: 24,
-    width: 24,
+  avatar: {
+    height: 12,
+    width: 12,
   },
 }));
 
 export default function BodyCard(props) {
-  const { list, column, history } = props;
+  const { list, column } = props;
   const classes = useStyles();
 
   return (
@@ -54,8 +54,10 @@ export default function BodyCard(props) {
                 <span>
                   {item.text}
                   <br />
-                  <Avatar alt="avater-image" src="" className={classes.avater}></Avatar>
-                  {item.name}
+                  <div style={{display: "flex", justifyContent: "left", alignItems: "center", textAlign: "left", width: "70%"}}>
+                    <Avatar alt="avatar-image" src={item.avatarUrl} className={classes.avatar}></Avatar>
+                    <span style={{paddingLeft: "4px"}}>{item.username}</span>
+                  </div>
                 </span>
               }
               actionIcon={

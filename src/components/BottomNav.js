@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -12,7 +12,10 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 const useStyles = makeStyles({
   root: {
     maxWidth: 1920,
+    width: "100%",
     minWidth: 400,
+    position: "fixed",
+    bottom: 0,
   },
 });
 

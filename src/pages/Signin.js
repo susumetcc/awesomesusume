@@ -2,8 +2,11 @@ import React from "react";
 import { Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Grid from '@material-ui/core/Grid';
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import IconButton from '@material-ui/core/IconButton';
+import PersonIcon from '@material-ui/icons/Person';
+import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
+import Snackbar from '@material-ui/core/Snackbar';
 import AuthForm from "../components/AuthForm";
 import "./Signup.css";
 
@@ -42,11 +45,12 @@ class Signin extends React.Component {
       });
       redirect = queries['redirect'];
     }
-    this.state = {email: '', password: '', isSignin: false, redirect: redirect};
+    this.state = {email: '', password: '', isSignin: false, redirect: redirect, open: false};
 
     this.mailChange = this.mailChange.bind(this);
     this.passChange = this.passChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.alertClose = this.alertClose.bind(this);
   }
 
   mailChange(event) {
@@ -57,14 +61,23 @@ class Signin extends React.Component {
     this.setState({password: event.target.value});
   }
 
-  handleSubmit(event) {
-    let uid = signInAuth(this.state);
+  async handleSubmit(event) {
+    let uid = await signInAuth(this.state);
     console.log(uid)
     if (uid) {
       this.setState({isSignin: true});
+    } else {
+      this.setState({open: true});
     }
     event.preventDefault();
   }
+
+  alertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({open: false});
+  };
 
   render() {
     return (
@@ -76,8 +89,8 @@ class Signin extends React.Component {
             <div>
               <React.Fragment>
                 <span className={"center-item"}>
-                  <span className={"avater-area"}>
-                    <PersonAddIcon
+                  <span className={"avatar-area"}>
+                    <PersonIcon
                       style={{ height: "32px", width: "32px", color: "#ffffff" }}
                     />
                   </span>
@@ -92,6 +105,24 @@ class Signin extends React.Component {
                   type={"サインイン"}
                 />
               </React.Fragment>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                open={this.state.open}
+                autoHideDuration={5000}
+                onClose={this.alertClose}
+                message="サインインできませんでした。もう一度やり直してください。"
+                action={
+                  <React.Fragment>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={this.alertClose}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </React.Fragment>
+                }
+              >
+              </Snackbar>
             </div>
           </Grid>
         }
