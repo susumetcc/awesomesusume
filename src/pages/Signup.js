@@ -4,7 +4,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import firebase, { auth, db } from '../firebase';
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/Authentication/AuthForm";
 import "./Signup.css";
 
 function openAccount(props) {

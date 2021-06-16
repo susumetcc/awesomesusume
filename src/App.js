@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import './App.css';
-import Auth from "./components/Auth"
+import Auth from "./components/Authentication/Auth"
 import Explore from "./pages/Explore";
 import Article from "./pages/Article";
 import Post from "./pages/Post";

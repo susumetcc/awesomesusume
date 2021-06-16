@@ -31,7 +31,7 @@ export default function BottomNavBar(props) {
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
       <BottomNavigationAction label="ホーム" value="home" icon={<HomeIcon />} component={Link} to="/" />
       <BottomNavigationAction label="お気に入り" value="favorites" icon={<StarIcon />} component={Link} to="/" />
-      <BottomNavigationAction label="投稿" value="post" icon={<AddBoxIcon color="primary" fontSize="large" />} component={Link} to="/post" />
+      <BottomNavigationAction label="投稿" value="post" icon={<AddBoxIcon color="primary" fontSize={value === "post"? "default" : "large"} />} component={Link} to="/post" />
       <BottomNavigationAction label="やりとり" value="message" icon={<EmailIcon />} />
       <BottomNavigationAction label="MyAccount" value="myaccount" icon={<AccountBoxIcon />} />
     </BottomNavigation>

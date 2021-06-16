@@ -94,7 +94,7 @@ const cardContents = [
   },
 ]
 
-class Content extends React.Component {
+class ItemPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {list: cardContents, tab: props.tab};
@@ -159,4 +159,4 @@ class Content extends React.Component {
   }
 }
 
-export default Content
+export default ItemPanel

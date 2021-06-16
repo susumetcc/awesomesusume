@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 import LoadingOverlay from 'react-loading-overlay';
 
 class RedirectAuth extends React.Component {

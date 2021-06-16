@@ -7,7 +7,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
 import Snackbar from '@material-ui/core/Snackbar';
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/Authentication/AuthForm";
 import "./Signup.css";
 
 function signInAuth(props) {
