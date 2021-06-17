@@ -92,11 +92,10 @@ export default function ImgMediaCard() {
         >
           <Tab label="フォロー中" {...a00yProps(0)} />
           <Tab label="カテゴリ" {...a00yProps(1)} />
-          <Tab label="サーチ" {...a00yProps(2)} />
         </Tabs>
       </Paper>
       <ModePanel value={mode} index={0} style={{justifyContent: "center", paddingBottom: "16px"}} >
-        <p>パネル1</p>
+        <p>タイムライン</p>
         <FollowPanel tab={"home"} />
       </ModePanel>
       <ModePanel value={mode} index={1} style={{justifyContent: "center", paddingBottom: "16px"}}>
@@ -155,7 +154,6 @@ export default function ImgMediaCard() {
           </div>
         </SwipeableViews>
       </ModePanel>
-      <ModePanel value={mode} index={2} style={{justifyContent: "center", padding: "2px"}} ></ModePanel>
       <BottomNavBar page="home" />
     </>
   );

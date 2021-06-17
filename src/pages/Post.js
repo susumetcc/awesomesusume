@@ -52,6 +52,7 @@ class ImgMediaCard extends React.Component {
       text: this.state.text,
       detail: this.state.detail,
       category: this.state.category,
+      tag: [],
       user: db.collection("users").doc(this.state.uid),
       userid: this.state.uid,
       imageUrl: imgUrl,

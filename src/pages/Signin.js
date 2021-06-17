@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from 'react-router-dom';
-import { auth } from '../firebase';
+import firebase, { auth } from '../firebase';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
@@ -8,10 +8,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from "@material-ui/core/Typography";
 import Snackbar from '@material-ui/core/Snackbar';
 import AuthForm from "../components/Authentication/AuthForm";
+import LoginProvider from "../components/LoginProvider";
 import "./Signup.css";
 
-function signInAuth(props) {
-  auth.signInWithEmailAndPassword(props.email, props.password)
+async function signInAuth(props) {
+  await auth.signInWithEmailAndPassword(props.email, props.password)
     .then((userCredential) => {
       // Signed in
       var user = userCredential.user;
@@ -45,11 +46,13 @@ class Signin extends React.Component {
       });
       redirect = queries['redirect'];
     }
-    this.state = {email: '', password: '', isSignin: false, redirect: redirect, open: false};
+    this.state = {email: '', password: '', isSignin: false, redirect: redirect, open: false, isChecking: false};
 
     this.mailChange = this.mailChange.bind(this);
     this.passChange = this.passChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.googleLoginHandler = this.googleLoginHandler.bind(this);
+    this.appleLoginHandler = this.appleLoginHandler.bind(this);
     this.alertClose = this.alertClose.bind(this);
   }
 
@@ -70,6 +73,28 @@ class Signin extends React.Component {
       this.setState({open: true});
     }
     event.preventDefault();
+  }
+
+  async googleLoginHandler() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    this.setState({isChecking: true});
+    await auth.signInWithPopup(provider).then((result) => {
+      this.setState({isSignin: true});
+    }).catch((error) => {
+      console.log(error)
+      this.setState({open: true, isChecking: false});
+    });
+  }
+
+  async appleLoginHandler() {
+    const provider = new firebase.auth.OAuthProvider('apple.com');
+    this.setState({isChecking: true});
+    await auth.signInWithPopup(provider).then((result) => {
+      this.setState({isSignin: true});
+    }).catch((error) => {
+      console.log(error)
+      this.setState({open: true, isChecking: false});
+    });
   }
 
   alertClose = (event, reason) => {
@@ -123,6 +148,13 @@ class Signin extends React.Component {
                 }
               >
               </Snackbar>
+            </div>
+            <div>
+              {this.state.isChecking?
+                <p>認証中...</p>
+              :
+                <LoginProvider google={this.googleLoginHandler} apple={this.appleLoginHandler} />
+              }
             </div>
           </Grid>
         }

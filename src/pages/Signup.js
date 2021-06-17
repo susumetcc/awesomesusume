@@ -20,6 +20,8 @@ function openAccount(props) {
         avatarUrl: "",
         intro: "",
         favorite: [],
+        follow: [],
+        follower: 0,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
       window.location.href = "/";

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import firebase, { auth, db, storage } from '../firebase';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +22,7 @@ import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutline
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import AddCommentOutlinedIcon from '@material-ui/icons/AddCommentOutlined';
+import Chip from '@material-ui/core/Chip';
 import './Article.css';
 import ViewComments from '../components/ViewComments';
 import BottomNavBar from '../components/BottomNav';
@@ -73,17 +75,26 @@ function CardDetail(props) {
       }
     }
   }
+
+  let taglist = [];
+  if (data.tag) {
+    data.tag.forEach(tag => {
+      taglist.push(<Chip label={tag} variant="outlined" color="primary" size="small" />)
+    })
+  }
   return (
     <>
       <CardHeader
         avatar={
-          <div style={{display: "flex"}}>
-            <Avatar aria-label="recipe" className={classes.avatar} src={data.avatar}>
-            </Avatar>
-            <Typography variant="body2" color="textSecondary" component="p" className={classes.author}>
-              {data.name}
-            </Typography>
-          </div>
+          <Link to={`/t/${data.userid}`}>
+            <div style={{display: "flex"}}>
+              <Avatar aria-label="recipe" className={classes.avatar} src={data.avatar}>
+              </Avatar>
+              <Typography variant="body2" color="textSecondary" component="p" className={classes.author}>
+                {data.name}
+              </Typography>
+            </div>
+          </Link>
         }
         action={
           <IconButton aria-label="settings">
@@ -122,6 +133,7 @@ function CardDetail(props) {
         <IconButton aria-label="star">
           <StarBorderOutlinedIcon />
         </IconButton>
+        {taglist}
       </CardActions>
     </>
   )
