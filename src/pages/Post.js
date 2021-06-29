@@ -24,7 +24,7 @@ class ImgMediaCard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {title: "", text: "", detail: "", category: "", uid: "", file: [], docId: db.collection("articles").doc().id};
+    this.state = {title: "", text: "", detail: "", category: "", uid: "", file: [], fileUrl: [], docId: db.collection("articles").doc().id};
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.changeFile = this.changeFile.bind(this);
@@ -90,8 +90,14 @@ class ImgMediaCard extends React.Component {
     let nowfile = this.state.file;
     const path = 'userdata/' + this.state.uid + '/' + this.state.docId + '/' + (nowfile.length) + '.jpg';
     const storageRef = storage.ref().child(path); //画像保存パス
-    await storageRef.put(e.target.files[0], {contentType: 'image/jpeg',}).then(function(snapshot) {
+    const thisfunc = this;
+    await storageRef.put(e.target.files[0], {contentType: 'image/jpeg',}).then(async function(snapshot) {
       console.log('Uploaded a blob or file!');
+      let imgUrl = thisfunc.state.fileUrl;
+      await storageRef.getDownloadURL().then(function(url) {
+        imgUrl.push(url);
+        thisfunc.setState({ fileUrl: imgUrl });
+      });
     });
     nowfile.push(path);
     this.setState({ file: nowfile });
@@ -112,11 +118,15 @@ class ImgMediaCard extends React.Component {
   }
 
   render() {
+    const filepath = this.state.fileUrl;
     return (
       <>
         <div className={"postDiv"}>
           <p>投稿</p>
           <form className={useStyles.root + " postForm"} onSubmit={this.handleOnSubmit} noValidate autoComplete="off">
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              {filepath.map((path) => <img style={{maxHeight: '40%', maxWidth: '40%'}} src={path} />)}
+            </div>
             <Button className={"inputbox"} component="label">
               ファイル送信ボタンです
               <input
